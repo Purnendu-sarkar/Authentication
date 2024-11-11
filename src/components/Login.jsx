@@ -15,12 +15,20 @@ const LogIn = () => {
 
         // reset Status
         setSuccess(false);
+        setLoginError('');
+        
 
         // Log in user
         signInWithEmailAndPassword(auth, email, password)
         .then(result => {
             console.log(result.user);
-            setSuccess(true);
+            if(!result.user.emailVerified) {
+                setLoginError('Please Verify your email address.')
+            }
+            else{
+                setSuccess(true); 
+            }
+            
         })
         .catch(error => {
             console.log('Error', error.message);
