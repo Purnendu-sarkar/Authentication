@@ -2,6 +2,7 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 import React, { useState } from "react";
 import { auth } from "../firebase.init";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 const Signupp = () => {
   const [success, setSuccess] = useState(false);
@@ -13,11 +14,18 @@ const Signupp = () => {
 
     const email = event.target.email.value;
     const password = event.target.password.value;
-    console.log(email, password);
+    const terms = event.target.terms.checked;
+    console.log(email, password, terms);
 
     // reset error and status
     setErrorMessage("");
     setSuccess(false);
+
+
+    if(!terms) {
+      setErrorMessage('Please accept our terms and conditions.');
+      return;
+    }
 
     if (password.length < 6) {
       setErrorMessage("PAssword should be 6 characters!");
@@ -87,7 +95,7 @@ const Signupp = () => {
             
             <input
               type="checkbox"
-              defaultChecked
+              name="terms"
               className="checkbox checkbox-success"
             />
             <span className="label-text">Accept Our Terms And Condition.</span>
@@ -100,6 +108,8 @@ const Signupp = () => {
       </form>
       {errorMessage && <p className="text-red-600">{errorMessage}</p>}
       {success && <p className="text-green-700">SignUp Successful!</p>}
+
+      <p>New to this website Please <Link to="/login">Log In</Link></p>
     </div>
   );
 };
